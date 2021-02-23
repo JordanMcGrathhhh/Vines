@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Project Manager - Sign-Up
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12 text-center">
+          <h1>Sign-up!
+          </h1>
+          <h6>Create Your Project Manager Account
+          </h6>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+          <form action="" method="POST">
+            {{ form.csrf_token() }}
+            {% for field, errors in form.errors.items() %}
+            {{ ', '.join(errors) }}
+            {% endfor %}
+            <div class="row mb-3">
+              <div class="col">
+                {{ form.firstName(class="form-control", placeholder="John") }}
+              </div>
+              <div class="col">
+                {{ form.lastName(class="form-control", placeholder="Doe") }}
+              </div>
+            </div>
+            <div class="mb-3">
+              {{ form.username(class="form-control", placeholder="Username") }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password:
+              </label>
+              {{ form.password(class="form-control", placeholder="********") }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Confirm Password:
+              </label>
+              {{ form.confirmPassword(class="form-control", placeholder="********") }}
+            </div>
+            {{ form.submit(class="btn btn-primary mt-3") }}
+          </form>
+          <h6 class="mt-5 text-center">Already Have An Account?
+            <a href="{{ url_for('login') }}">Sign in!
+            </a>
+          </h6>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
