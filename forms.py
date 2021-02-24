@@ -1,6 +1,16 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, EqualTo
+from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+import app
+
+# Custom Validators
+
+
+def org_code_check(field):
+    if app.organizations.query.filter_by(code=field.data).first():
+        pass
+    else:
+        raise ValidationError('Organization Does Not Exist')
 
 
 class loginForm(FlaskForm):
@@ -24,4 +34,13 @@ class signupForm(FlaskForm):
                              validators=[DataRequired(), Length(min=8, max=32, message="Password must be between 8-32 Characters!")])
     confirmPassword = PasswordField(label="Confirm Password",
                                     validators=[DataRequired(), EqualTo('password', message="Passwords must match!")])
+    org_code = StringField(label="Organization Code",
+                           validators=[DataRequired(), org_code_check])
     submit = SubmitField(label="Try Free!")
+
+
+class registerForm(FlaskForm):
+
+    name = StringField(label="Organization Name",
+                       validators=[DataRequired(), Length(max=64, message="Organization Name too long.")])
+    submit = SubmitField(label="Register!")

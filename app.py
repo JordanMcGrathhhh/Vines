@@ -4,7 +4,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 import forms
-
+import organizationCodes
 
 # Setup
 app = Flask(__name__)
@@ -26,15 +26,30 @@ class accounts(UserMixin, db.Model):
     lastName = db.Column(db.String(32))
     username = db.Column(db.String(16))
     password = db.Column(db.String(32))
+    org_code = db.Column(db.String(8))
 
-    def __init__(self, firstName, lastName, username, password):
+    def __init__(self, firstName, lastName, username, password, org_code):
         self.firstName = firstName
         self.lastName = lastName
         self.username = username
         self.password = password
+        self.org_code = org_code
+
+
+class organizations(db.Model):
+    id = db.Column('org_id', db.Integer, primary_key=True)
+    code = db.Column(db.String(8))
+
+    def __init__(self, code):
+        self.code = code
 
 
 db.create_all()
+
+
+org = organizations("NETIZEN1")
+db.session.add(org)
+db.session.commit()
 
 
 @login.user_loader
@@ -55,7 +70,8 @@ def signup():
         account = accounts(request.form['firstName'],
                            request.form['lastName'],
                            request.form['username'],
-                           generate_password_hash(request.form['password']))
+                           generate_password_hash(request.form['password']),
+                           request.form['org_code'])
         db.session.add(account)
         db.session.commit()
         return redirect(url_for('login'))
@@ -76,6 +92,14 @@ def login():
             print("Sign-in Attempted: Access Denied")
             flash("Incorrect Login Parameters.")
     return render_template('login.html', form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = forms.registerForm()
+
+    # Generate the Random Organization Code for the user to accept when POSTed
+
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])

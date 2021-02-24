@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vines - Register an Organization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    {% for field, errors in form.errors.items() %}
+    <div class="alert alert-danger alert-dismissible text-center ml-3 mr-3 mt-3">
+      <strong> {{ ', '.join(errors) }} </strong>
+      <button type="button" class="close" data-dismiss="alert">
+        <span style="font-size: 1em;">X</span>
+      </button>
+    </div>
+    {% endfor %}
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12 text-center">
+          <h1>Sign-up!
+          </h1>
+          <h6>Register Your Organization
+          </h6>
+          <hr>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+          <form action="" method="POST">
+            {{ form.csrf_token() }}
+            <div class="row mb-3">
+              <div class="col">
+                {{ form.name(class="form-control", placeholder="Example Inc.") }}
+              </div>
+            </div>
+
+      </div>
+    </div>
+  </body>
+</html>
+
+</body>
+</html>
