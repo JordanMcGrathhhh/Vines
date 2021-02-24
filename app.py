@@ -43,6 +43,11 @@ def load_account(id):
 
 
 # Routes
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = forms.signupForm()
@@ -64,6 +69,7 @@ def login():
         account = accounts.query.filter_by(username=request.form['username']).first()
         if account and check_password_hash(account.password, form.password.data):
             print("Sign-in Attempted: Access Granted")
+            session['username'] = account.username
             login_user(account)
             return redirect(url_for('dashboard'))
         else:
@@ -76,4 +82,6 @@ def login():
 @login_required
 def dashboard():
 
-    return render_template('dashboard.html')
+    username = (session['username'])
+
+    return render_template('dashboard.html', username=username)
