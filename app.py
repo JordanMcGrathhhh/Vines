@@ -52,8 +52,8 @@ db.create_all()
 
 
 @login.user_loader
-def load_account(id):
-    return accounts.query.get(int(id))
+def load_account(uuid):
+    return accounts.query.get(int(uuid))
 
 
 # Routes
@@ -98,19 +98,17 @@ def register():
     form = forms.registerForm()
 
     # Generate the Random Organization Code for the user to accept when POSTed
-    code = organizationCodes.generateCode()
-    print(code)
 
     if form.validate_on_submit():
-
+        code = organizationCodes.generateCode()
+        print(code)
         organization = organizations(request.form['name'],
                                      code,
                                      request.form['email'])
         db.session.add(organization)
         db.session.commit()
-        code = ""
-        return redirect(url_for('login'))
-    return render_template('register.html', form=form, code=code)
+        return redirect(url_for('signup'))
+    return render_template('register.html', form=form)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
