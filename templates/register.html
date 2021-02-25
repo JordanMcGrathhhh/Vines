@@ -32,14 +32,26 @@
             {{ form.csrf_token() }}
             <div class="row mb-3">
               <div class="col">
+                <label class="form-label">Organization Name:</label>
                 {{ form.name(class="form-control", placeholder="Example Inc.") }}
               </div>
             </div>
-
+            <div class="row mb-3">
+              <div class="col">
+                <label class="form-label">Contact Email:</label>
+                {{ form.email(class="form-control", placeholder="JohnDoe@Example.com") }}
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <h4>Your Code is: {{ code }}</h4>
+                <h5>Register to reserve it now!</h5>
+              </div>
+            </div>
+            {{ form.submit(class="btn btn-primary mt-3") }}
+          </form>
+        </div>
       </div>
     </div>
   </body>
-</html>
-
-</body>
 </html>

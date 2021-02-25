@@ -38,18 +38,17 @@ class accounts(UserMixin, db.Model):
 
 class organizations(db.Model):
     id = db.Column('org_id', db.Integer, primary_key=True)
+    name = db.Column(db.String(32))
     code = db.Column(db.String(8))
+    email = db.Column(db.String(128))
 
-    def __init__(self, code):
+    def __init__(self, name, code, email):
+        self.name = name
         self.code = code
+        self.email = email
 
 
 db.create_all()
-
-
-org = organizations("NETIZEN1")
-db.session.add(org)
-db.session.commit()
 
 
 @login.user_loader
@@ -99,7 +98,19 @@ def register():
     form = forms.registerForm()
 
     # Generate the Random Organization Code for the user to accept when POSTed
+    code = organizationCodes.generateCode()
+    print(code)
 
+    if form.validate_on_submit():
+
+        organization = organizations(request.form['name'],
+                                     code,
+                                     request.form['email'])
+        db.session.add(organization)
+        db.session.commit()
+        code = ""
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form, code=code)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])

@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from wtforms.fields.html5 import EmailField
 import app
 
 # Custom Validators
 
 
-def org_code_check(field):
+def org_code_check(form, field):
     if app.organizations.query.filter_by(code=field.data).first():
         pass
     else:
@@ -43,4 +44,6 @@ class registerForm(FlaskForm):
 
     name = StringField(label="Organization Name",
                        validators=[DataRequired(), Length(max=64, message="Organization Name too long.")])
+    email = EmailField(label="Email",
+                       validators=[DataRequired(), Length(max=128, message="Email too long.")])
     submit = SubmitField(label="Register!")
